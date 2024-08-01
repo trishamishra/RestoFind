@@ -1,0 +1,41 @@
+<!--
+    layout("layouts/boilerplate") (via ejs-mate) causes the contents of this
+    file to be passed to the views/layouts/boilerplate.ejs file as the local
+    variable called body.
+    The final page to be rendered is made up of the contents of the boilerplate
+    file after the above substitution has been performed.
+
+    Adding w_1280,h_720,c_fill to a Cloudinary image url fetches a 1280 x 720
+    cropped version of the original image.
+    For eg., https://res.cloudinary.com/dyhzti25i/image/upload/w_1280,h_720,c_fill/v1715628238/RestoFind/wedknifopioh7wgziizk.jpg
+    instead of https://res.cloudinary.com/dyhzti25i/image/upload/v1715628238/RestoFind/wedknifopioh7wgziizk.jpg.
+-->
+
+<% layout("layouts/boilerplate") %>
+
+<h1 class="mb-3">All Restaurants</h1>
+
+<% for (let restaurant of restaurants) { %>
+<div class="card mb-3">
+    <div class="row">
+        <div class="col-md-4">
+            <img class="img-fluid"
+                src="<%= restaurant.images.length > 0 ? (((restaurant.images)[0]).url).replace("/upload", "/upload/w_1280,h_720,c_fill") : "" %>"
+                alt="">
+        </div>
+
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title"><%= restaurant.title %></h5>
+                <p class="card-text"><%= restaurant.description %></p>
+
+                <p class="card-text">
+                    <small class="text-muted"><%= restaurant.location %></small>
+                </p>
+
+                <a class="btn btn-primary" href="/restaurants/<%= restaurant._id %>">View <%= restaurant.title %></a>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>

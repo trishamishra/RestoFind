@@ -1,0 +1,126 @@
+<!--
+    ?_method=DELETE tells Express (via method-override) to treat this as a
+    DELETE request, instead of a POST request.
+-->
+
+<% layout("layouts/boilerplate") %>
+<link rel="stylesheet" href="/style-sheets/star-ratings.css">
+
+<div class="row">
+    <div class="col-6">
+        <div id="restaurant-carousel" class="carousel slide">
+            <div class="carousel-inner">
+                <% for (let i = 0; i < restaurant.images.length; ++i) { %>
+                <div class="carousel-item <%= i === 0 ? "active" : "" %>">
+                    <img src="<%= (((restaurant.images)[i]).url).replace("/upload", "/upload/w_1280,h_720,c_fill") %>"
+                        class="d-block w-100" alt="">
+                </div>
+                <% } %>
+            </div>
+
+            <% if (restaurant.images.length > 1) { %>
+            <button class="carousel-control-prev" type="button" data-bs-target="#restaurant-carousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#restaurant-carousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            <% } %>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><%= restaurant.title %></h5>
+                <p class="card-text"><%= restaurant.description %></p>
+            </div>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted"><%= restaurant.location %></li>
+                <li class="list-group-item">Added by <%= restaurant.author.username %></li>
+                <li class="list-group-item">Rs. <%= restaurant.price %> Per Person</li>
+            </ul>
+
+            <% if ((current_user) && (restaurant.author.equals(current_user))) { %>
+            <div class="card-body">
+                <a class="card-link btn btn-info" href="/restaurants/<%= restaurant._id %>/edit">Edit</a>
+
+                <form class="d-inline" action="/restaurants/<%= restaurant._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+            <% } %>
+
+            <div class="card-footer text-muted">
+                2 days ago
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <% if (current_user) { %>
+        <h2>Leave a review</h2>
+
+        <form class="mb-3 needs-validation" action="/restaurants/<%= restaurant._id %>/reviews" method="POST"
+            novalidate>
+            <div class="mb-2">
+                <!--
+                    Used to display ratings as stars.
+                    Copied from starability-css.
+                -->
+                <fieldset class="starability-basic">
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="review[rating]" value="3" checked />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="body">Review</label>
+                <textarea class="form-control" name="review[body]" id="body" rows="3" required></textarea>
+            </div>
+
+            <button class="btn btn-success">Submit</button>
+        </form>
+        <% } %>
+
+        <% for (let review of restaurant.reviews) { %>
+        <div class="card mb-3">
+            <div class="card-body">
+                <!--
+                    Used to display ratings as stars.
+                    Copied from starability-css.
+                -->
+                <p class="starability-result" data-rating="<%= review.rating %>">
+                    <!--
+                        This text will not be displayed on the page, but will be
+                        helpful for, for eg., screen readers.
+                    -->
+                    Rating: <%= review.rating %>
+                </p>
+
+                <h6 class="card-subtitle mb-2 text-muted">by <%= review.author.username %></h6>
+                <p class="card-text"><%= review.body %></p>
+
+                <% if ((current_user) && (review.author.equals(current_user))) { %>
+                <form action="/restaurants/<%= restaurant._id %>/reviews/<%= review._id %>?_method=DELETE"
+                    method="POST">
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+                <% } %>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>

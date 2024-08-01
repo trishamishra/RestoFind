@@ -1,0 +1,58 @@
+<!--
+    name="restaurant[title]", name="restaurant[location]", etc. will cause
+    Express to receive a single restaurant object (req.body.restaurant) from the
+    request having title, location, etc. as properties.
+
+    novalidate disables the client-side browser default validations for the
+    form, and allows Bootstrap to take over.
+
+    Even though type="number" min="0" step="0.01" ensures that the entered price
+    is a valid positive price, someone can still use, for eg., Postman, to
+    bypass the client-side validations, in which case the server-side
+    validations will come into effect.
+-->
+
+<% layout("layouts/boilerplate") %>
+
+<div class="row">
+    <h1 class="text-center mb-3">New Restaurant</h1>
+
+    <div class="col-6 offset-3">
+        <form class="needs-validation" action="/restaurants" method="POST" enctype="multipart/form-data" novalidate>
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="restaurant[title]" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="location">Location</label>
+                <input class="form-control" type="text" id="location" name="restaurant[location]" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="form-file-multiple" class="form-label">Images</label>
+                <input class="form-control" type="file" id="form-file-multiple" name="images" multiple>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="price">Average Price (Per Person)</label>
+
+                <div class="input-group">
+                    <span class="input-group-text" id="price-label">Rs.</span>
+                    <input class="form-control" type="number" min="0" step="0.01" id="price" name="restaurant[price]"
+                        placeholder="0.00" aria-label="price" aria-describedby="price-label" required>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="restaurant[description]"
+                    required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-success">Add Restaurant</button>
+            </div>
+        </form>
+    </div>
+</div>

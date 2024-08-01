@@ -1,0 +1,71 @@
+/*
+
+ * Node.js is a runtime environment that allows you to run JavaScript code on
+   the server (i.e. outside a web browser).
+ * Express.js is a framework that works on top of Node.js.
+   It provides various mechanisms to handle common server-side tasks.
+ * EJS (Embedded JavaScript) is a templating language that lets you generate
+   HTML with plain JavaScript.
+ * Mongoose.js is an Object-Document Mapper library which allows you to interact
+   with MongoDB (which is a document database) using JavaScript objects.
+
+ * Middleware in Express are functions that come into play after the server
+   receives the request and before the response is sent to the client.
+ * They are arranged in a chain and are called in sequence.
+
+ * From within a folder, use npm init to create a package.json file for the
+   corresponding Node.js web application.
+ * npm init -y will create the package.json file using the default settings.
+
+ * Use sudo npm i express mongoose ejs method-override etc. to install Express,
+   Mongoose, EJS, method-override, etc. for the corresponding Node.js project.
+
+ * Use node app.js or nodemon app.js to start the Express server.
+   Using nodemon will automatically restart the server whenever changes are
+   saved.
+
+ * Go to http://localhost:<port number> (for eg., localhost:3000) using a web
+   browser to see the first page hosted from the corresponding web application.
+
+ * Use sudo brew services start mongodb-community@<version no. (for eg.. 6.0)>
+   to start the MongoDB service.
+ * To access the MongoDB shell, use mongosh (instead of mongo).
+
+ * The asyncHandler() described at https://stackoverflow.com/a/51391081 has not
+   been used here because understanding it requires a good knowledge of
+   JavaScript.
+
+ * To understand cookies and sessions, see https://stackoverflow.com/a/32564053,
+   MDN, freeCodeCamp, Google, etc.
+
+ * const hashed_password = await bcrypt.hash(password, 12);
+   Here, 12 represents the cost factor, which controls how much time is needed
+   to calculate a single BCrypt hash. The higher the cost factor, the more
+   hashing rounds are done. Increasing the cost factor by 1 doubles the
+   necessary time. The more time is necessary, the more difficult is
+   brute-forcing.
+ * The hashed password consists of the salt in plain text, concatenated with the
+   hashed version of the salt + the password.
+   For eg., if the salt is nOUIs5kJ7naTuTFkBy1veu and if the password is abcdef,
+   then the resulting hashed password may be
+   $2y$12$nOUIs5kJ7naTuTFkBy1veuK0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa, where 2y
+   represents the hashing algorithm (BCrypt), 12 is the cost factor,
+   nOUIs5kJ7naTuTFkBy1veu is the salt, and K0kSxUFXfuaOKdOKf9xYT0KKIGSJwFa is
+   the hashed version of the salt + abcdef.
+ * if (!(req.session.user_id)) {
+       // This code will be reached, for eg., when user_id is undefined (such
+       // as when the user_id property doesn't exist on the req.session object
+       // because no successful login has been done with respect to the current
+       // session), or when user_id is equal to null (such as when user_id is
+       // explicitly assigned null during logging out the user with respect to
+       // the current session).
+   }
+ * Instead of implementing authentication from scratch (by using brycpt, by
+   manually manipulating the req.session object, etc. (as shown above)), we have
+   used Passport.js, which does all of this work for us.
+
+ * To understand Bootstrap, EJS, Node.js, Express.js, MongoDB, Mongoose.js,
+   Passport.js, etc., see MDN, freeCodeCamp, documentations, Google, etc.
+
+ */
+
